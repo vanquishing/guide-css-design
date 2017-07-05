@@ -1,4 +1,4 @@
-# CSS設計ガイドライン v0.1.1
+# CSS設計ガイドライン v0.2.0
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -15,7 +15,6 @@
     - [Utility【ユーティリティ】](#utility%E3%83%A6%E3%83%BC%E3%83%86%E3%82%A3%E3%83%AA%E3%83%86%E3%82%A3)
 - [禁止と制限](#%E7%A6%81%E6%AD%A2%E3%81%A8%E5%88%B6%E9%99%90)
   - [カスケーディングの制限](#%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E5%88%B6%E9%99%90)
-  - [ネストの制限](#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%AE%E5%88%B6%E9%99%90)
 - [基本構成](#%E5%9F%BA%E6%9C%AC%E6%A7%8B%E6%88%90)
   - [ディレクトリ構成](#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90)
   - [style.scss](#stylescss)
@@ -238,42 +237,18 @@ Modifierで解決することが難しいまたは適切ではない、わずか
 レイヤー要素間のカスケーディングは、上位レベルのレイヤー要素による下位レベルのレイヤー要素のカスケーディングを除き、禁止とする。
 
 ``` scss
-/*
- * 以下は許可
- */
-
-// 上位レベルのレイヤー要素による下位レベルのレイヤー要素のカスケーディング
-.c_component {
-  ...
-  > .m_module {
-    ...
-  }
-}
-
-// レイヤー要素内でのカスケーディング
-.c_component {
-  &__element {
-    ...
-  }
-	&._modifier {
-    .c_component__element {
-      ...
-    }
-  }
-}
-
-/*
- * 以下は禁止
- */
-
-// 下位レベルのレイヤー要素による上位レベルのレイヤー要素のカスケーディング
+// (1)
+// 下位レベルのレイヤー要素で上位レベルのレイヤー要素をカスケーディングしている
+// 上位レベルのレイヤー要素ほど詳細度が高くなるという本ガイドラインのルールが曖昧になってしまう
 .c_component {
   .p_package {
     ...
   }
 }
 
-// 同位レベルのレイヤー要素同士のカスケーディング
+// (2)
+// 同位レベルのレイヤー要素同士でカスケーディングしている
+// 同位レベルのレイヤー要素同士に依存関係をもたせると、挙動の予測が困難になってしまう
 .c_a-component {
   .c_b-component {
     ...
@@ -281,37 +256,10 @@ Modifierで解決することが難しいまたは適切ではない、わずか
 }
 ```
 
-### ネストの制限
-
-オブジェクトの子孫に同位レベル以上のオブジェクトをもたせることは禁止とする。
-
 ``` jsx
-/*
- * 以下は許可
- */
-
-// 子孫に下位レベルのオブジェクト
-<div class="c_component">
-  <div class="m_module"></div>
-</div>
-
-// 子孫にオブジェクト以外
-<div class="c_component">
-  <div class="l_layout"></div>
-</div>
-
-/*
- * 以下は禁止
- */
-
-// 子孫に同位レベルのオブジェクト
-<div class="c_a-component">
-  <div class="c_b-component"></div>
-</div>
-
-// 子孫に上位レベルのオブジェクト
-<div class="m_module">
-  <div class="c_component"></div>
+// (2)の例と同様
+<div class="c_component-a c_component-b">
+  ...
 </div>
 ```
 
