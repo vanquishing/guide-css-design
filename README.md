@@ -1,4 +1,4 @@
-# CSS設計ガイドライン v0.2.0
+# CSS設計ガイドライン v0.2.1
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -357,6 +357,7 @@ Modifierで解決することが難しいまたは適切ではない、わずか
 
 基本的にはBEMのルールを継承するが、可読性の向上のため、以下にように独自のルールを設ける。
 
+- `Block__Element1__Element2`のようにElementの連結はせず、`Block__Element1-Element2`または`Block__Element3`のようにする。
 - Modifier（--）は使用せず、アンダースコアから始まる具体的な名前をつけたクラスを定義し、マルチクラスで指定する。
 
 ``` html
@@ -369,8 +370,8 @@ Modifierで解決することが難しいまたは適切ではない、わずか
 ```scss
 .c_article-card {
   &._highlight {
-    // Modifier style
-  }
+      // Modifier style
+    }
 }
 ```
 
